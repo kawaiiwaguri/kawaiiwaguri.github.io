@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Kawaii Waguri Kaoruko</title>
+    <meta name="theme-color" content="#ffc1cc" />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background: #fff;
+        font-family: Arial, sans-serif;
+      }
+
+      .gallery {
+        column-count: 3;
+        column-gap: 16px;
+        max-width: 1400px;
+        margin: auto;
+        padding: 16px;
+      }
+
+      .gallery img {
+        width: 100%;
+        height: auto;
+        margin-bottom: 16px;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        transition: transform 0.2s ease;
+        display: block;
+        break-inside: avoid;
+        background: #fdfdfd;
+      }
+
+      .gallery img:hover {
+        transform: scale(1.05);
+      }
+
+      @media (max-width: 900px) {
+        .gallery { column-count: 2; column-gap: 20px; padding: 20px; }
+        .gallery img { margin-bottom: 20px; }
+      }
+
+      @media (max-width: 600px) {
+        .gallery { column-count: 1; column-gap: 0; padding: 16px; }
+        .gallery img { margin-bottom: 16px; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="gallery" id="gallery"></div>
+
+    <script>
+    // Deterministic Seeded Shuffle with CSS Masonry
+    function seededShuffle(array, seed) {
+      function random() {
+        const x = Math.sin(seed++) * 10000;
+        return x - Math.floor(x);
+      }
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    window.onload = function() {
+      const gallery = document.getElementById('gallery');
+      const total = 29;
+      const files = [];
+      for (let i = 1; i <= total; i++) {
+        files.push(`${i}.gif`);
+      }
+
+      const shuffled = seededShuffle(files, 42);
+
+      shuffled.forEach(src => {
+        const img = document.createElement('img');
+        img.src = src;
+        img.loading = "lazy";
+        gallery.appendChild(img);
+      });
+    };
+    </script>
+  </body>
+</html>
